@@ -117,34 +117,34 @@ Create a network topology that allows a mobile device in Iran to route traffic t
 
 ```mermaid
 flowchart LR
-  subgraph IRAN_CENSORED[IRAN CENSORED NETWORK]
-    Mobile[Mobile Device\nWireGuard Client\n10.100.0.2/32]
-    VPS[VPS (Iran)\nPublic IP: 203.0.113.10\nwg0: 10.100.0.1/24\nMeshnet: 100.96.10.2]
+  subgraph IRAN_CENSORED["IRAN CENSORED NETWORK"]
+    Mobile["Mobile Device<br/>WireGuard Client<br/>10.100.0.2/32"]
+    VPS["VPS (Iran)<br/>Public IP: 203.0.113.10<br/>wg0: 10.100.0.1/24<br/>Meshnet: 100.96.10.2"]
     Mobile -- "WG UDP 51820" --> VPS
   end
 
-  subgraph HOME[HOME NETWORK]
-    Pi[Home Raspberry Pi\nMeshnet: 100.96.10.1\neth0: Starlink\nwlan0: SIM]
+  subgraph HOME["HOME NETWORK"]
+    Pi["Home Raspberry Pi<br/>Meshnet: 100.96.10.1<br/>eth0: Starlink<br/>wlan0: SIM"]
   end
 
   VPS -- "Meshnet" --> Pi
-  Pi -- "NAT out eth0" --> Internet[(Internet\nNordVPN Servers)]
+  Pi -- "NAT out eth0" --> Internet["Internet<br/>NordVPN Servers"]
 ```
 
 ### Bootstrap tunnel (required for fallback routing)
 
 ```mermaid
 flowchart LR
-  Pi2[Pi wg1: 10.200.0.2/30\nSIM uplink] -- "WG UDP 51821" --> VPS2[VPS wg1: 10.200.0.1/30\nPublic IP: 203.0.113.10]
+  Pi2["Pi wg1: 10.200.0.2/30<br/>SIM uplink"] -- "WG UDP 51821" --> VPS2["VPS wg1: 10.200.0.1/30<br/>Public IP: 203.0.113.10"]
 ```
 
 ### Scenario 2: You are abroad
 
 ```mermaid
 flowchart LR
-  Abroad[Device Abroad\nMeshnet Client\n100.96.10.50] --> Pi2[Home Raspberry Pi\nMeshnet: 100.96.10.1]
-  Pi2 -- "Policy routing" --> SIM[SIM Uplink\nIran Domestic]
-  Pi2 -- "Default route" --> Starlink[Starlink\nGlobal Internet]
+  Abroad["Device Abroad<br/>Meshnet Client<br/>100.96.10.50"] --> Pi2["Home Raspberry Pi<br/>Meshnet: 100.96.10.1"]
+  Pi2 -- "Policy routing" --> SIM["SIM Uplink<br/>Iran Domestic"]
+  Pi2 -- "Default route" --> Starlink["Starlink<br/>Global Internet"]
 ```
 
 ---
